@@ -13,15 +13,14 @@
 	<!-- Chosen -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
-	<!-- My Styles -->
-	<link rel="stylesheet" type="text/css" href="../public/styles/style.css">
-</head>
+
 <body>
 	<div class="container">
 		<h3><strong>About You</strong></h3>
 		<h4>Name (Required)</h4>
 		<input type="text" id="name" class="form-control" required>
-
+		<h4>Photo (Required)</h4>
+		<input type="text" id="photo" class="form-control" required>
 		<hr>
 
 		<h3><strong>Question 1</strong></h3>
@@ -157,11 +156,13 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h2 class="modal-title"><strong>Your Ditto!</strong></h2>
+					<h2 class="modal-title"><strong>Your Match!</strong></h2>
 				</div>
 				<div class="modal-body">
 					<h2 id="match-name"></h2>
+					<img id="match-photo" src="">
 				</div>
+
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
@@ -192,6 +193,7 @@
 			if (validateForm()) {
 				var userData = {
 					name: $("#name").val(),
+					photo: $("#photo").val(),
 					scores: [
 						$("#q1").val(),
 						$("#q2").val(),
@@ -205,13 +207,32 @@
 						$("#q10").val()
 					]
 				};
+			
+				//console.log(userData);
 				$.post("/api/friends", userData, function (data) {
+					console.log("data", data);
 					$("#match-name").text(data.name);
+					$("#match-photo").attr("src", data.photo);
+					$("#match-photo").attr("height", 200);
 					$("#results-modal").modal("toggle");
 				});
+
 			} else {
 				alert("Please fill out all fields before submitting!");
 			}
+			//Clear the form when submitting
+			$("#name").val('');
+			$("#photo").val('');
+			$("#q1").val('');
+			$("#q2").val('');
+			$("#q3").val('');
+			$("#q4").val('');
+			$("#q5").val('');
+			$("#q6").val('');
+			$("#q7").val('');
+			$("#q8").val('');
+			$("#q9").val('');
+			$("#q10").val('');
 		});
 	</script>
 
